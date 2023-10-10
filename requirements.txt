@@ -6,7 +6,7 @@ charset-normalizer==3.1.0
 cryptography==39.0.2
 defusedxml==0.7.1
 Deprecated==1.2.13
-Django==4.2.1
+Django
 django-allauth==0.52.0
 django-embed-video==1.4.8
 django-environ==0.10.0
