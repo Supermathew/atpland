@@ -1,0 +1,691 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .sidenav {
+    height: 100vh;
+    /* width: 0; */
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #f9f7f7;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    border-right: 1.5px solid #ebe9e9;
+    }
+    .sidenav a {
+    padding: 8px 4px 8px 8px;
+    margin-bottom: 0.8rem;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 400;
+    color: #292929;
+    display: block;
+    transition: 0.3s;
+    }
+    .sidenav a:hover {
+    color: #ff4b2b;
+    /* background-color: rgb(253, 119, 71); */
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    border-bottom: 1px solid gray;
+    }
+    .sidenav a:active {
+    color: white;
+    background-color: #0e0d0d;
+    font-weight: 600;
+    border-radius: 10px;
+    }
+    /* Mobile */
+    .mobile-sidebar a {
+    padding: 8px 4px 8px 8px;
+    margin-bottom: 0.8rem;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 400;
+    color: #292929;
+    display: block;
+    transition: 0.3s;
+    }
+    .sidbut  i{
+      font-size: 30px;
+    }
+    .mobile-sidebar a:hover {
+    color: #ff4b2b;
+    border-bottom: 1px solid gray;
+    /* background-color: rgb(253, 119, 71); */
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    border-bottom: 1px solid gray;
+    }
+    .mobile-sidebar a:active {
+    color: white;
+    background-color: #0e0d0d;
+    font-weight: 600;
+    border-radius: 10px;
+    }
+    /* Mobile */
+    @media screen and (max-width: 800px) {
+    /* .sidenav {padding-top: 45px;} */
+    .sidenav a {
+    font-size: 18px;
+    }
+    }
+    .fs-0 {
+    font-size: 16px;
+    }
+    .input:focus {
+    outline: 2px solid black;
+    }
+    .delete-btn:hover {
+    color: red;
+    background: white;
+    }
+    .view-profile-btn:hover {
+    color: yellow;
+    background: white;
+    }
+    .delete-btn:hover {
+    color: red;
+    background: white;
+    }
+    .upload-property-btn:hover {
+    color: rgb(178, 178, 41);
+    background: white;
+    }
+    .Change-btn:hover {
+    color: green;
+    background: white;
+    }
+    .form-control {
+    padding: 12px;
+    }
+    input[type="file"] {
+    padding: 10px;
+    border: 2px dotted black;
+    }
+    .upload {
+    height: 700px !important;
+    position: relative !important;
+    overflow-y: scroll;
+    }
+    #deleteprofile,
+    #EditProfile {
+    display: block;
+    }
+    #changepass{
+    display: block;
+    }
+</style>
+<div class="d-md-flex h">
+    <div id="mySidenav"class="sidenav col-xl-2 col-md-3 bg-dander d-md-block d-none">
+        <a href="{% url 'wishlist' %}"
+            ><i class="fa-solid fa-clipboard-list fs-lg-5 me-1"></i> Your
+        wishlist</a
+            >
+        <a href="{% url 'upload' %}" 
+            ><i class="bi bi-cloud-plus-fill fs-lg-5 me-1"></i> Upload property</a
+            >
+        <a href="{% url 'message' %}">
+        <i class="bi bi-chat-left-text-fill fs-lg-5 me-1"></i> Messages</a
+            >
+        <a href="{% url 'profileupdate' request.user.id %}" 
+            ><i class="bi bi-person-circle fs-lg-5 me-1"></i> Verify Profile</a
+            >
+        {% if user.has_usable_password %}
+        <a href="{% url 'changepassword' %}" 
+            ><i class="fa-solid fa-unlock-keyhole fs-lg-5 me-1"></i>
+        Change password</a
+            >
+        {% else %}
+        <a href="{% url 'setpassword' %}" 
+            ><i class="fa-solid fa-unlock-keyhole fs-lg-5 me-1"></i>
+        set password</a>
+        {% endif %}
+        <a href="{% url 'Yourproperty' %}" >
+        <i class="fa-solid fa-clipboard-list fs-lg-5 me-1"></i>Your Uploaded Property</a
+            >
+        <a href="{% url 'logout' %}"
+            ><i class="bi bi-box-arrow-right fs-lg-5 me-1 fw-semibold"></i>
+        Logout</a
+            >
+    </div>
+    <!-- Mobile View -->
+    <div class="d-md-none d-block">
+      <button
+               style="height: 50px;"
+          class="btn btn-danger sidbut fs-5 w-100 rounded-0 justify-content-start d-flex"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasExample"
+          aria-controls="offcanvasExample"
+        >
+         <i class="bi bi-box-arrow-right text-black fs-4 me-1 fw-semibold">User Dashbord</i>
+        </button>
+        <div
+            class="offcanvas offcanvas-start col-sm-6 col-8"
+            tabindex="-1"
+            id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel"
+            >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+                    Dashboard
+                </h5>
+                <a
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                    ></a>
+            </div>
+            <div class="offcanvas-body mobile-sidebar">
+                <a href="{% url 'wishlist' %}"
+                    ><i class="fa-solid fa-clipboard-list fs-lg-5 me-1"></i> Your
+                wishlist</a
+                    >
+                <a href="{% url 'upload' %}"
+                    ><i class="bi bi-cloud-plus-fill fs-lg-5 me-1"></i> Upload
+                property</a
+                    >
+                <a href="{% url 'message' %}">
+                <i class="bi bi-chat-left-text-fill fs-lg-5 me-1"></i> Messages</a
+                    >
+                <a href="{% url 'profileupdate' request.user.id %}"
+                    ><i class="bi bi-person-circle fs-lg-5 me-1"></i> Verify
+                Profile</a
+                    >
+                    {% if user.has_usable_password %}
+                    <a href="{% url 'changepassword' %}" 
+                        ><i class="fa-solid fa-unlock-keyhole fs-lg-5 me-1"></i>
+                    Change password</a
+                        >
+                        {% else %}
+                        <a href="{% url 'setpassword' %}" 
+                        ><i class="fa-solid fa-unlock-keyhole fs-lg-5 me-1"></i>
+                    set password</a>
+                        {% endif %}
+                        <a href="{% url 'Yourproperty' %}" >
+                          <i class="fa-solid fa-clipboard-list fs-lg-5 me-1"></i>Your Uploaded Property</a
+                              >
+                  <a href="{% url 'logout' %}"
+                      ><i class="bi bi-box-arrow-right fs-lg-5 me-1 fw-semibold"></i>
+                  Logout</a
+                      >
+            </div>
+        </div>
+    </div>
+    <!-- Mobile View -->
+    <div class="col-md-10 d-flex flex-column upload align-items-center bg-white">
+      <!-- Your property -->
+      <div class="delete w-100" id="Yourproperty">
+        <div class="fs-1 fw-semibold px-5 my-5">Your Property</div>
+        <div class="d-flex  flex-wrap  flex-row  mx-md-5   rounded gap-3"> 
+           {% if userproperty %}
+           {% for ans in userproperty %}
+       
+          <div class="card col-md-4 text-start"  style="height:50vh">
+            <img class="card-img-top h-50 w-100 p-0" src="{{ ans.images1.url }}" style="" alt="Title">
+            <div class="card-body">
+              <h6 class="card-text">{{ans.property_name}}</h6>
+              <h5 class="card-title"> {{ans.price}}| {{ans.property_squarefeet}}</h5>
+              <h6 class="card-text">{{ans.district}}</h6>
+              <h6 class="card-text">Ready To move</h6>
+              <div class="d-flex gap-3">
+                <button type="button" name="" id="" class="btn btn-warning my-3 px-3">
+                   <a href="{{ ans.get_url }}" class="text-white" style="text-decoration: none;">view </a>  
+                </button>
+                <button type="button" name="" id="" class="btn btn-danger my-3 px-3">
+                  <a href="{% url 'propertydelete' ans.slug  %}" class="text-white" style="text-decoration: none;">Delete </a>  
+               </button>
+                <button class="btn btn-primary my-3 px-3" onclick="handleclick(this)" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ ans.id }}">
+                  Edit 
+                  <i class="bi bi-pencil-square text-white"  ></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="  m-1 d-flex   ">
+          <div class="modal fade" id="exampleModal{{ ans.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" >
+              <div class="modal-content justify-content-center  ">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Update Property Details</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center">
+                  <div
+                  class="d-flex flex-column w-75 mx-5  p-5 rounded "
+                  style="background-color: #f9f7f7;"
+                >
+                <form action="{% url 'property_update' ans.slug %}" class="row g-3" method="post" enctype="multipart/form-data" >
+                  {%csrf_token%}
+                  <div class="col-md-6">
+                    <label for="inputState" class="form-label fs-0 fw-semibold"
+                      >Owner Type</label
+                    >
+                    <select required=true id="inputState" name="owner_type" class="form-select p-3">
+                      <option selected value='{{ ans.owner_type }}'>Owner</option>
+                      <option>Agent</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Property Name</label
+                      >
+                      <br />
+                      <input required=true
+                        type="text"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Owner Name"
+                        value='{{ ans.property_name }}'
+      
+                        name="property_name"
+                        
+      
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label 
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Property Cents</label
+                      >
+                      <br />
+                      <input required=true
+                        type="text"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Property Cents"
+                        name="property_cents"
+                        value='{{ ans.property_cent }}'
+      
+      
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Property Sq Feet</label
+                      >
+                      <br />
+                      <input required=true
+                        type="number"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Property Sq Feet"
+                        name="property_sq_feet"
+                        value='{{ ans.property_squarefeet }}'
+      
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="inputState" class="form-label fs-0 fw-semibold"
+                      >Water Availbility</label
+                    >
+                    <select id="inputState" name="water_avl" class="form-select p-3">
+                      <option selected value='{{ ans.property_Water_Availability }}'>24 Hrs</option>
+                      <option>Sheduled</option>
+                      <option>Limited</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                      <label for="inputState" class="form-label fs-0 fw-semibold"
+                        >Transportation Availbility</label
+                      >
+                      <select id="inputState" name="pro_cat" class="form-select p-3">
+                        <option selected value='{{ ans.category }}'>Agriculture Lands</option>
+                        <option>Venture Plots</option>
+                        <option>Commercial Lands</option>
+                        <option>Farm House</option>
+                        <option>House Property</option>
+                      </select>
+                    </div>
+      
+      
+                    <div class="col-md-6">
+                      <label for="inputState" class="form-label fs-0 fw-semibold"
+                        >Transportation Availbility</label
+                      >
+                      <select id="inputState" name="Trans_avl" class="form-select p-3">
+                        <option selected value='{{ ans.property_transpaortation }}'>24 Hrs</option>
+                        <option>Sheduled</option>
+                        <option>Limited</option>
+                      </select>
+                    </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label 
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Property Address</label
+                      >
+                      <br />
+                      <input required=true
+                        type="text"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Property Address"
+                        name="prop_add"
+                        value='{{ ans.property_address }}'
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label 
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Price</label
+                      >
+                      <br />
+                      <input required=true
+                        type="number"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Price"
+                        name="price"
+                        value='{{ ans.price }}'
+      
+      
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Token Amount</label
+                      >
+                      <br />
+                      <input
+                        type="number"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Token amount"
+                        name="token_amount"
+                        value='{{ ans.tocken_amount }}'
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Property Discription</label
+                      >
+                      <br />
+                      <textarea required=true
+                        type="text"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Property Discription"
+                        name="property_discription"
+                        value='{{ ans.description }}'
+                      >{{ ans.description }}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label
+                        for="formGroupExampleInput2"
+                        class="form-label fs-0 fw-semibold"
+                        >Video url</label
+                      >
+                      <br />
+                      <input
+                        type="text"
+                        class="input form-control fs-md- fs-0 py-3"
+                        id="formGroupExampleInput2"
+                        placeholder="Video Url"
+                        name="video_url"
+                        value='{{ ans.video_url }}'
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6"  style=" white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;">
+                    <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                      >Property Video</label
+                    >
+                    <input 
+                      type="file"
+                      accept="video/*"
+                      class="form-control"
+                      id="hidden-input"
+                      placeholder="Address"
+                      name="pro_video"
+                      value='{{ ans.video.url }}'
+                    />
+                  <a href="{{ ans.video.url }}">{{ ans.video.url }}</a>
+                  </div>
+                  <div class="col-md-6"  style=" white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;">
+                    <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                      >Property Image</label
+                    >
+                    <input 
+                      type="file"
+                      class="form-control"
+                      id="hidden-input"
+                      placeholder="Address"
+                      name="pro_image"
+                      accept="image/*"
+                      value='{{ ans.images1.url }}'
+                    />
+                    <a href="{{ ans.images1.url }}" class="col-md-6" style="">{{ ans.images1.url }}</a>
+                  </div>
+                  {% if ans.images2 %}
+                  <div class="col-md-6"  style=" white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image1"
+                        accept="image/*"
+                        value='{{ ans.images2.url }}'
+                      />
+                      <a href="{{ ans.images2.url }}">{{ ans.images2.url }}</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image1"
+                        accept="image/*"
+                      />
+                      
+                    </div>
+                    {% endif %}
+                    {% if ans.images3 %}
+                    <div class="col-md-6"  style=" white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image2"
+                        accept="image/*"
+                        value='{{ ans.images3.url }}'
+                      />
+                      <a href="{{ ans.images3.url }}">{{ ans.images3.url }}</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6"  style=" white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image2"
+                        accept="image/*"
+                      />
+                    </div>
+                    {% endif %}
+                    {% if ans.images4 %}
+                    <div class="col-md-6"  style=" white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image3"
+                        accept="image/*"
+                        value='{{ ans.images4.url }}'
+                      />
+                      <a href="{{ ans.images4.url }}" class="overflow-" style="text-overflow: ellipsis;">{{ ans.images4.url }}</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-6"  style=" white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;">
+                      <label for="inputAddress" class="form-label fs-0 fw-semibold"
+                        >Property Image</label
+                      >
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="hidden-input"
+                        placeholder="Address"
+                        name="pro_image3"
+                        accept="image/*"
+                      />
+                    </div>
+                    {% endif %}
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label
+                          for="formGroupExampleInput2"
+                          class="form-label fs-0 fw-semibold"
+                          >Owner Phone Number</label
+                        >
+                        <br />
+                        <input required=True
+                          type="number"
+                          class="input form-control fs-md- fs-0 py-3"
+                          id="formGroupExampleInput2"
+                          placeholder="Phone Number"
+                          name="phone_number"
+                          value = '{{ ans.phonenumber }}'
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label
+                          for="formGroupExampleInput2"
+                          class="form-label fs-0 fw-semibold"
+                          >Property pincode</label
+                        >
+                        <br />
+                        <input required=True
+                          type="number"
+                          class="input form-control fs-md- fs-0 py-3"
+                          id="formGroupExampleInput2"
+                          placeholder="Price"
+                          name="pincode"
+                          value = '{{ ans.property_pincode }}'
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label 
+                          for="formGroupExampleInput2"
+                          class="form-label fs-0 fw-semibold"
+                          >Property Districts</label
+                        >
+                        <br />
+                        <input required=true
+                          type="text"
+                          pattern="^[a-zA-Z ]+$"
+                          class="input form-control fs-md- fs-0 py-3"
+                          id="formGroupExampleInput2"
+                          placeholder="Property Address"
+                          name="district"
+                          value = '{{ ans.district }}'
+                        />
+                      </div>
+                    </div>
+                <div class="my-3">
+                  <button
+                    type="submit" 
+                    class="upload-property-btn btn btn-success py-md-3 px-md-4 p-3 fs-0"
+                  >
+                    Upload Property
+                  
+                  </button>
+                </div>
+              </form>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+
+          
+        </div> 
+        {% endfor %}
+        {% endif %}
+      </div> 
+      </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item"><a class="page-link" href="?pg=1" aria-label="previous"><span aria-hidden="true">&laquo;</span></a></li>
+          {% if userproperty.has_previous %}
+              <li class="page-item"><a class="page-link" href="?pg={{ userproperty.previous_page_number }}">{{ userproperty.previous_page_number }}</a></li>
+          {% endif %}
+          <li class="page-item"><a class="page-link" href="?pg={{userproperty.number}}">{{ userproperty.number }}</a></li>
+          {% if userproperty.has_next %}
+             <li class="page-item"><a class="page-link" href="?pg={{ userproperty.next_page_number }}">{{ userproperty.next_page_number }}</a></li>
+          {% endif %}
+          <li class="page-item"><a class="page-link" href="?pg={{userproperty.paginator.num_pages}}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+      </nav>
+    </div>
+
+</div>
+{% endblock %}

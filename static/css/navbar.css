@@ -1,0 +1,51 @@
+.navbar{
+    z-index: 100;
+    transition-duration: 0.3s;
+    top: 0;
+  }
+  .text-red{
+    color: #fe473a !important;
+  }
+
+  .bg-red{
+    background-color: #fe5a4e !important;
+  }
+  .custom-links:hover{
+    color: #fe473a !important;
+  }
+  .links {
+      display: inline-block;
+      position: relative;
+      font-size: 1rem !important;
+      background-color: transparent !important;
+    }
+    .links:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 3px;
+      bottom: 0;
+      left: 0;
+      background-color: #fe776d;
+      transform-origin: bottom right;
+      transition: transform 0.25s ease-out;
+    }
+    .nav{
+      background-color: transparent;
+    }
+    .links:hover:after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+   
+   .text-decoration{
+    text-decoration: none;
+   }
+   
+   @media only screen and (max-width: 600px){
+	.property-mobile {
+        margin-top: 14px;
+      }
+
+   }  

@@ -1,0 +1,182 @@
+
+{% load static %}
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/sing.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+</head>
+<body>
+
+	  <!-- Button trigger modal -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h1 class="modal-title fs-6" id="staticBackdropLabel" >OTP Verification</h1>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+			<div class="contain" >
+				<header>
+				  <i class="bx bxs-check-shield"></i>
+				</header>
+				<h6>Enter OTP Code</h6>
+				<form class="form1" action="#">
+				  <div class="input-field">
+					<input class="otpinput" type="number" />
+					<input class="otpinput"  type="number" disabled />
+					<input class="otpinput" type="number" disabled />
+					<input class="otpinput" type="number" disabled />
+					<input class="otpinput" type="number" disabled />
+					<input class="otpinput" type="number" disabled />
+				  </div>
+				  <button class="verifyotp" data-bs-dismiss="modal"   >Verify OTP</button>
+				</form>
+			  </div>
+	  </div>
+	</div>
+  </div>
+  </div>
+  
+
+  {% include 'includes/alerts.html' %}
+<div class="main-form-container" id="main-form-container">
+	
+	<div class="form-container sign-in-container">
+		
+		<form action="{% url 'register' %}" method="POST">
+			{% csrf_token %}
+			<h1>Sign Up</h1>
+		     <div style="display: flex; gap: 10px;" >
+				{{ form.first_name }}
+				{{ form.last_name }}
+             </div>
+			 <div  style="display: flex; gap: 4px;" class="col-12">
+				<div class="col-8" >
+			 {{form.phone_number}}
+			</div>
+			
+			</div>
+			{{form.email}}
+			{{ form.password }}
+			{{form.confirm_password}}
+			<button id="open" onclick="openModal" class=" btn text-white  " style="background-color: #ff6449;" >Sign Up</button>
+              <p class="Mobile-login-link" >Already registered? <a class="ovrenge-color" href="{% url 'login' %}">Login Now</a></p>
+			  <b>{{ form.email.errors }}</b>
+             <b>{{ form.non_field_errors }}</b>
+		</form>
+	</div>
+	<div class="overlay-container">
+		<div class="overlay">
+			<div class="overlay-panel overlay-right">
+				<h1>Hello, Friend!</h1>
+				<p>Enter your personal details and start journey with us</p>
+				<button class="ghost btn text-white" id="signUp" onclick="location.href='{% url 'login' %}';">Login</button>
+
+                <p>Already registered? </p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
+
+<script>
+
+
+
+    
+
+	const inputs = document.querySelectorAll(".otpinput"),
+	 button = document.querySelector(".verifyotp");
+    
+	 
+	 let btn=document.getElementById("sendOTP");
+let no=document.getElementById("phoneNo");
+// btn.addAttribute()
+no.addEventListener("input", (event) => {
+  console.log(no.value.length)
+  var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+  if(no.value.length==10&&no.value.match(phoneno)){
+    btn.removeAttribute("disabled")
+  }
+  else{
+     btn.setAttribute("disabled",false)
+  }
+});
+	 
+    
+   // iterate over all inputs
+   inputs.forEach((input, index1) => {
+	 input.addEventListener("keyup", (e) => {
+	   // This code gets the current input element and stores it in the currentInput variable
+	   // This code gets the next sibling element of the current input element and stores it in the nextInput variable
+	   // This code gets the previous sibling element of the current input element and stores it in the prevInput variable
+	   const currentInput = input,
+		 nextInput = input.nextElementSibling,
+		 prevInput = input.previousElementSibling;
+   
+	   // if the value has more than one character then clear it
+	   if (currentInput.value.length > 1) {
+		 currentInput.value = "";
+		 return;
+	   }
+	   // if the next input is disabled and the current value is not empty
+	   //  enable the next input and focus on it
+	   if (nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== "") {
+		 nextInput.removeAttribute("disabled");
+		 nextInput.focus();
+	   }
+   
+	   // if the backspace key is pressed
+	   if (e.key === "Backspace") {
+		 // iterate over all inputs again
+		 inputs.forEach((input, index2) => {
+		   // if the index1 of the current input is less than or equal to the index2 of the input in the outer loop
+		   // and the previous element exists, set the disabled attribute on the input and focus on the previous element
+		   if (index1 <= index2 && prevInput) {
+			 input.setAttribute("disabled", true);
+			 input.value = "";
+			 prevInput.focus();
+		   }
+		 });
+	   }
+	   //if the fourth input( which index number is 3) is not empty and has not disable attribute then
+	   //add active class if not then remove the active class.
+	   if (!inputs[5].disabled && inputs[5].value !== "") {
+		 button.classList.add("active");
+		 return;
+	   }
+	   button.classList.remove("active");
+	 });
+   });
+   
+   //focus the first input which index is 0 on window load
+   window.addEventListener("load", () => inputs[0].focus());
+   
+   
+
+
+   
+	   </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+{% endblock %}

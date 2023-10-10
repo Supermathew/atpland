@@ -1,0 +1,369 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link href="https://cdn.jsdelivr.net/gh/yesiamrocks/cssanimation.io@1.0.3/cssanimation.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="Theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@500&display=swap" rel="stylesheet">
+    <title>Property details</title>
+</head>
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+    .text-2xl{
+    font-size: 1.3rem;
+    font-weight: 400;
+    }
+    .text-sm{ 
+    font-size: 14px;
+    color: black;
+    font-weight: 300;
+    }
+    .navbar{
+    list-style: none;
+    text-decoration: none;
+    color: black;
+    }
+    .overview a{
+    color: white;
+    font-size: 1rem;
+    font-family: sans-serif;
+    }
+    /* Position the image container (needed to position the left and right arrows) */
+    .container-i {
+    position: relative;
+    width: 90vw;
+    margin: 30px auto;
+    box-shadow: 0 0 15px black;
+    }
+    /* Hide the images by default */
+    .mySlides {
+    display: none;
+    }
+    @keyframes fadeIn {
+    from { opacity: 0 }
+    to { opacity: 1 }
+    }
+    /* Add this class to show the image*/
+    .show {
+    display: block;
+    animation: fadeIn .5s linear;
+    }
+    .mySlides img {
+    width: 100%;
+    padding: 0;
+    max-height:70vh;
+    object-fit: fill;
+    margin-bottom: -6px
+    }
+    /* Add a pointer when hovering over the thumbnail images */
+    .cursor {
+    cursor: pointer;
+    }
+    @keyframes fadeOut {
+    from { opacity: 1 }
+    to { opacity: 0 }
+    }
+    /* Number text (1/3 etc) */
+    .numbertext {
+    animation: fadeOut 3s linear;
+    opacity: 0;
+    font-family: 'Mansalva', cursive; 
+    color: #f2f2f2;
+    font-size: 1rem;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+    }
+    /* Container for image text */
+    .caption-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    padding: 2px 0 0 0;
+    color: white;
+    }
+    #caption {
+    font-family: 'Muli', sans-serif;
+    font-size: 1.2rem;
+    margin: 0;
+    }
+    /* Next & previous arrow icons */
+    .prev,
+    .next {
+    cursor: pointer;
+    width: auto;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: .3s all;
+    }
+    .next {
+    border-radius: 10px 0 0 10px;
+    }
+    .prev {
+    border-radius: 0 10px 10px 0;
+    }
+    /* On hover, add a black background color */
+    .prev:hover,
+    .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    }
+    /* Thumnbail images */
+    .row {
+    display: flex;
+    width: 90vw;
+    padding-left: 20px
+    }
+    .thumbnail {
+    width:16% ;
+    padding: 4px;
+    }
+    .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0;
+    }
+    /* Add a opaque effect for thumnbail images */
+    .demo {
+    opacity: 0.6;
+    transition: .5s;
+    }
+    .demo:hover {
+    opacity: 1;
+    }
+    .active {
+    opacity: 1;
+    transform: scale(.8);
+    transition: .3s;
+    }
+    .prop i{
+    font-size: 20px;
+    }
+    .prop div{
+    font-size: 1rem;
+    }
+</style>
+
+<body>
+    <div class=" container-fluid d-flex justify-content-center text-white  py-3 " style=" background-color: #e37e82; width: 90vw;">
+        <div class=".pr fs-4 "> <i class="bi bi-amd"></i> {{ single_product.property_name }} <br> <span class=""> <i class="bi bi-geo-alt"></i>{{ single_product.property_address }},{{ single_product.property_pincode }}</span> </div>
+        <div class="text-end w-100 p-2" style="width: 100vw;"> <a>NO of intrested customers {{ noofmessage }} </i> <i class="bi bi-share ms-2 text-white"></i> </a> </div>
+    </div>
+    <div class=" d-md-flex  my-2 ">
+        <main class="container-i">
+            <!-- Full-width images with number text -->
+            <div class="mySlides show"> {% if single_product.images1 %} <img src="{{ single_product.images1.url }}"> </div> {% endif %} <div class="mySlides"> {% if single_product.images2 %} <img src="{{ single_product.images2.url }}"> {% endif %} </div>
+            <div class="mySlides"> {% if single_product.images3 %} <img src="{{ single_product.images3.url }}"> {% endif %} </div>
+            <div class="mySlides"> {% if single_product.images4 %} <img src="{{ single_product.images4.url }}"> {% endif %} </div>
+            <section class="caption-container">
+                <!-- Previous button --> <a class="prev">&#10094;</a> <!-- Image text -->
+                <p id="caption">The Woods</p> <!-- Next button --> <a class="next">&#10095;</a>
+            </section> <!-- Thumbnail images -->
+            <section id="thumbnail-section" class="row"> {% if single_product.images1 %} <div class="thumbnail"> <img class="demo cursor" src="{{ single_product.images1.url }}" alt=" {{ single_product.property_name }} "> </div> {% endif %} {% if single_product.images2 %} <div class="thumbnail"> <img class="demo cursor" src="{{ single_product.images2.url }}" alt=" {{ single_product.property_name }} "> </div> {% endif %} {% if single_product.images3 %} <div class="thumbnail"> <img class="demo cursor" src="{{ single_product.images3.url }}" alt=" {{ single_product.property_name }} "> </div> {% endif %} {% if single_product.images4 %} <div class="thumbnail"> <img class="demo cursor" src="{{ single_product.images4.url }}" alt=" {{ single_product.property_name }} "> </div> {% endif %}  </section>
+        </main>
+    </div>
+    <div class=" container">
+        <nav class=" overview nav fs-5 col-md-8 p-1" style="background-color: rgb(220, 112, 112); "> <a class="nav-link text-white  " aria-current="page" href="#overview">Overview</a> <a class="nav-link text-white" href="#feature">features</a> <a class="nav-link text-white" href="#location">Location</a> </nav>
+    </div>
+    <div class="container">
+        <div class=" d-md-flex gap-3">
+            <div class="col-md-8  " id="overview">
+                <div class=" fs-3  "> Overview
+                    <hr class="border border-warning border-4 opacity-50" style="width: 80px;">
+                </div>
+                <div class="">
+                    <p class="" style="font-size:1.2rem; font-family: 'Source Serif Pro', serif;">{{ single_product.description }}</p>
+                </div>
+                <div class=" fs-3  " id="feature"> Features
+                    <hr class="border border-warning border-4 opacity-50" style="width: 80px;">
+                </div>
+                <div class="d-md-flex gap-3 ">
+                    <div class="col-md-6 d-flex flex-column gap-2 prop">
+                        <div class="d-flex  text-2xl text-2xl justify-content-between">
+                            <div class=""><i class="bi bi-border-all"></i> Square feet</div>
+                            <div class="">{{ single_product.property_squarefeet }}</div>
+                        </div>
+                        <div class="d-flex text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-bag-heart-fill"></i> Cents</div>
+                            <div class="">{{ single_product.property_cent }}</div>
+                        </div>
+                        <div class="d-flex text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-car-front"></i>Road</div>
+                            <div class="">{{ single_product.property_transpaortation }}</div>
+                        </div>
+                        <div class="d-flex  text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-droplet"></i> Water</div>
+                            <div class="">{{ single_product.property_Water_Availability }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex flex-column gap-2 prop">
+                        <div class="d-flex text-2xl justify-content-between ">
+                            <div class=""> <i class="bi bi-currency-rupee"></i>Maximum Money</div>
+                            <div class="">{{ single_product.price }}</div>
+                        </div>
+                        <div class="d-flex text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-calendar-fill"></i> Listing date</div>
+                            <div class="">{{ single_product.created_date }}</div>
+                        </div>
+                        <div class="d-flex text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-bag-heart-fill"></i> Realtor</div>
+                            <div class="">{{ single_product.propertyowner.first_name }}</div>
+                        </div>
+                        <div class="d-flex  text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-bag-heart-fill"></i> Square feet</div>
+                            <div class="">{{ single_product.property_squarefeet }}</div>
+                        </div>
+                        <div class="d-flex  text-2xl justify-content-between">
+                            <div class=""> <i class="bi bi-telephone-outbound-fill"></i>Phone number</div>
+                            <div class="">{{ single_product.phonenumber }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" fs-3  " id="location"> video
+                    <hr class="border border-warning border-4 opacity-50" style="width: 80px;">
+                </div>
+                <div class=""><iframe class="w-100" style="height: 400px;" src="{{ single_product.video_url }}" title="YouTube video player" frameborder="100" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> </div>
+                <div class=" fs-3  " id="location"> Location
+                  <hr class="border border-warning border-4 opacity-50" style="width: 80px;">
+              </div>
+                <div class=""> <iframe class="w-100 " style="height: 400px;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="gmap_canvas" src=" {{ single_product.urltest | safe }}"></iframe> </div>
+            </div>
+            <div class="col-md-4 px-2 m-3" style="height: 500px; ">
+                <div class="fs-2 text-center fw-1"> Contact us</div>
+                <div class="container  shadow rounded-2 p-2" style="background-color: rgb(221, 221, 221);">
+                    <form action="{% url 'messagefrombuyer' single_product.id %}" class="border-2 border" method="post">
+                        {%csrf_token%}
+                         {% if user.is_authenticated %} 
+                         <div class="mb-3 ">
+                         {% if user.phone_number %} 
+                        <label for="" class="text-sm">your saved conteact number is{{ user.phone_number }} </label> <label for="" class="text-sm">you can change your number <span><a href="{% url 'profileupdate' user.id %}">click here</a></span> </label> 
+                         {% else %} 
+                         <input required=True type="number" name="phonenumber" class="form-control" id="exampleFormControlInput1" placeholder="phonenumber"> 
+                         {% endif %} </div>
+                        <div class="form-floating"> <textarea class="form-control" required=True name="Message" style="height: 100px" placeholder="Leave a comment here" id="floatingTextarea"></textarea> <label for="floatingTextarea">Message</label> </div>
+                         {% if user != single_product.propertyowner %}
+                          <div class="my-3"> <button type="submit" class="upload-property-btn btn btn-success py-md-3 px-md-4 p-3 fs-0 w-100"> send Enquiry </button> </div>
+                           {% else %} 
+                           <label for="" class="text-sm">your can not make inquiry in your own propety</label> 
+                           {% endif %} 
+                           {% else %} 
+                           <div class="mb-3 "> <input type="number" required name="phonenumber" class="form-control" id="exampleFormControlInput1" placeholder="phonenumber"> </div>
+                        <div class="form-floating"> <textarea required=True class="form-control" name="Message" style="height: 100px" placeholder="Leave a comment here" id="floatingTextarea"></textarea> <label for="floatingTextarea">Message</label> </div>
+                        <div class="my-3"> <label for="" class="text-sm">you need to login to make enquiry<span><a href="{% url 'login' %}">click here</a></span> </label> </div> 
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const thumbImgCont = document.getElementById('thumbnail-section');
+        const thumbnails = document.getElementsByClassName('thumbnail');
+        const fullSizeImgs = document.getElementsByClassName('mySlides');
+        const captionCont = document.querySelector('.caption-container');
+        const caption = document.getElementById('caption');
+        /* Acts as an index to retrieve images from 'thumbnails' and 'fullSizeImgs'; 
+        used with < and > arrow icons */
+        let currentImage = 0; 
+        
+        
+        // Removes 'show' classes from large images
+        // Removes 'active' class from thumbnails
+        function reset() {
+        for (let img of fullSizeImgs) {
+        img.classList.remove('show');
+        }
+        for (let thumbs of thumbnails) {
+        thumbs.firstElementChild.classList.remove('active');
+        }
+        }
+        
+        // Show larger image based on thumbnail index clicked
+        thumbImgCont.addEventListener('click', (e) => {
+        reset();
+        // Find index of thumbnail clicked
+        const index = [...thumbnails].indexOf(e.target.parentNode);
+        // Use that index to show its corrolating larger IMG
+        fullSizeImgs[index].classList.add('show');
+        // Set caption using img 'alt' tag
+        caption.textContent = e.target.getAttribute('alt');
+        // Set global variable for currentImage
+        currentImage = index;
+        // Alter the thumbnail to show it's selected
+        hiLiteThumbnail();
+        })
+        
+        function hiLiteThumbnail() {
+        let thumbnail = thumbnails[currentImage].firstElementChild;
+        thumbnail.classList.add('active');
+        }
+        
+        // Get Arrow Advancers to work
+        function goBack(e) {
+        reset();
+        if (e.target.classList.contains("prev") && currentImage > 0) {
+        currentImage -= 1;
+        fullSizeImgs[currentImage].classList.add('show');
+        caption.textContent = thumbnails[currentImage].firstElementChild.getAttribute('alt');
+        hiLiteThumbnail();
+        } else if (e.target.classList.contains("prev") && currentImage === 0) {
+        currentImage = thumbnails.length-1;
+        fullSizeImgs[currentImage].classList.add('show');
+        caption.textContent = thumbnails[currentImage].firstElementChild.getAttribute('alt');
+        hiLiteThumbnail();
+        }
+        }
+        
+        function goFwd(e) {
+        reset();
+        if (e.target.classList.contains("next") && currentImage < thumbnails.length-1) {
+        currentImage += 1;
+        fullSizeImgs[currentImage].classList.add('show');
+        caption.textContent = thumbnails[currentImage].firstElementChild.getAttribute('alt');
+        hiLiteThumbnail(); 
+        } else if (e.target.classList.contains("next") && currentImage === thumbnails.length-1) {
+        currentImage = 0;
+        fullSizeImgs[currentImage].classList.add('show');
+        caption.textContent = thumbnails[currentImage].firstElementChild.getAttribute('alt');
+        hiLiteThumbnail();  
+        }
+        }
+        
+        // Listen for back and forward arrow clicks
+        captionCont.addEventListener('click', (e) => {
+        // Allows only the Arrow icons to trigger event handlers
+        if (e.target.nodeName !== 'A') return false;
+        // Event Handlers
+        e.target.classList.contains("next") ? goFwd(e) : goBack(e);  
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</body>
+
+</html> {% endblock %}

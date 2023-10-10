@@ -1,0 +1,120 @@
+
+      .sidenav {
+        height: 100vh;
+        /* width: 0; */
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #f9f7f7;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+        border-right: 1.5px solid #ebe9e9;
+      }
+
+      .sidenav a {
+        padding: 8px 4px 8px 8px;
+        margin-bottom: 0.8rem;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 400;
+        color: #292929;
+        display: block;
+        transition: 0.3s;
+      }
+      .sidenav a:hover {
+        color: #ff4b2b;
+        /* background-color: rgb(253, 119, 71); */
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+        border-bottom: 1px solid gray;
+      }
+      .sidenav a:active {
+        color: white;
+        background-color: #0e0d0d;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+
+      /* Mobile */
+      .mobile-sidebar a {
+        padding: 8px 4px 8px 8px;
+        margin-bottom: 0.8rem;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 400;
+        color: #292929;
+        display: block;
+        transition: 0.3s;
+      }
+
+      .mobile-sidebar a:hover {
+        color: #ff4b2b;
+        border-bottom: 1px solid gray;
+
+        /* background-color: rgb(253, 119, 71); */
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+        border-bottom: 1px solid gray;
+      }
+      .mobile-sidebar a:active {
+        color: white;
+        background-color: #0e0d0d;
+        font-weight: 600;
+        border-radius: 10px;
+      }
+      /* Mobile */
+
+      @media screen and (max-width: 800px) {
+        /* .sidenav {padding-top: 45px;} */
+        .sidenav a {
+          font-size: 18px;
+        }
+      }
+      .fs-0 {
+        font-size: 16px;
+      }
+      .input:focus {
+        outline: 2px solid black;
+      }
+      .delete-btn:hover {
+        color: red;
+        background: white;
+      }
+      .view-profile-btn:hover {
+        color: yellow;
+        background: white;
+      }
+      .delete-btn:hover {
+        color: red;
+        background: white;
+      }
+      .upload-property-btn:hover {
+        color: rgb(178, 178, 41);
+        background: white;
+      }
+      .Change-btn:hover {
+        color: green;
+        background: white;
+      }
+      .form-control {
+        padding: 12px;
+      }
+      input[type="file"] {
+        padding: 10px;
+        border: 2px dotted black;
+      }
+      .upload {
+        height: 700px !important;
+        position: relative !important;
+
+        overflow-y: scroll;
+      }
+      #deleteprofile,
+      #EditProfile {
+        display: none;
+      }
+      #changepass{
+        display: none;
+      }
+    
