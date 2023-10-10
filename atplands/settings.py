@@ -32,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["atplands.onrender.com"]
 
+CSRF_TRUSTED_ORIGINS = ["atplands.onrender.com"]
 
 # Application definition
 
@@ -214,3 +215,19 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 
 SOCIALACCOUNT_ADAPTER = "accounts.mathew.MySocialAccountAdapter"
+
+
+DATABASES ={
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': dj_database_url.parse(env("DATABASE_URL")),
+        'NAME': env("PGDATABASE"),
+        'USER': env("PGUSER"),
+        'PASSWORD': env("PGPASSWORD"),
+        'HOST': env("PGHOST"),
+        'PORT': env("PGPORT"),
+    }
+}
+
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
