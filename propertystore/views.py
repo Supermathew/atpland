@@ -33,14 +33,11 @@ def home(request, category_slug=None):
         product_count = products.count()
     else:
         products = Product.objects.all().filter(verifyed=True).order_by('id')
-        print(len(products))
         product_count = products.count()
         try:
           agriculture = Category.objects.get(category_name='Agriculture Lands')
         except Exception as e:
              agriculture = None
-        print(agriculture)
-        print(products)
         try:
           house= Category.objects.get(category_name='House Property')
         except Exception as e:
