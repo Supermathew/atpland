@@ -33,3 +33,5 @@ sqlparse==0.4.3
 tzdata==2022.7
 urllib3==1.26.15
 wrapt==1.15.0
+gunicorn==19.7.1
+
